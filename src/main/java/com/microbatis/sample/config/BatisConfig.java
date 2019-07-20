@@ -25,7 +25,6 @@ import java.util.Map;
  * @date 2019/7/20 6:01 PM
  */
 @Configuration
-@Component
 public class BatisConfig {
 
     @Bean("dataSource")
