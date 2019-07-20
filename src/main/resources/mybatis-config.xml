@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<configuration>
+    <environments>
+        <dataSource type="POOLED">
+            <property name="driver" value="com.mysql.jdbc.Driver" />
+            <property name="url" value="jdbc:mysql://localhost:3306/toy_framework?useUnicode=true&amp;characterEncoding=utf-8" />
+            <property name="username" value="root" />
+            <property name="password" value="123456" />
+        </dataSource>
+    </environments>
+
+    <mappers>
+        <mapper resource="mapper/UserMapper.xml"/>
+        <!--<mapper resource="mapper/OrderMapper.xml"/>-->
+        <!--<mapper resource="mapper/order/OrderMapper1.xml"/>-->
+
+        <!-- 指定扫描resource目录下所有mapper文件 -->
+<!--        <scan-mapper package="mapper"/>-->
+    </mappers>
+</configuration>
