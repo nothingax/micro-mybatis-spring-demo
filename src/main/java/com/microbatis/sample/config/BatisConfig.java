@@ -1,8 +1,11 @@
 package com.microbatis.sample.config;
 
+import com.microbatis.sample.dao.UserDAO;
 import com.xiongyx.datasource.DataSource;
 import com.xiongyx.datasource.DruidDataSourceManager;
 import com.xiongyx.session.SqlSessionFactory;
+import com.zjw.spring.MapperFactoryBean;
+import com.zjw.spring.MapperScannerConfigurer;
 import com.zjw.spring.SqlSessionFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,5 +60,13 @@ public class BatisConfig {
             e.printStackTrace();
         }
         return sqlSessionFactoryBeanObject;
+    }
+
+    @Bean
+    public UserDAO userDAO() {
+        MapperFactoryBean<UserDAO> factoryBean = new MapperFactoryBean<>();
+        factoryBean.setMapperInterface(UserDAO.class);
+        factoryBean.setSqlSessionFactory(sqlSessionFactoryBean());
+        return factoryBean.getObject();
     }
 }

@@ -1,5 +1,8 @@
 package com.microbatis.sample;
 
+import com.microbatis.sample.dao.PersonDAO;
+import com.microbatis.sample.dao.UserDAO;
+import com.microbatis.sample.model.User;
 import com.xiongyx.session.SqlSession;
 import com.xiongyx.session.SqlSessionFactory;
 import com.zjw.spring.SqlSessionFactoryBean;
@@ -12,7 +15,7 @@ import java.util.Map;
 /**
  * Program Name: micro-mybatis-spring
  * <p>
- * Description:
+ * Description: 测试main
  * <p>
  *
  * @author zhangjianwei
@@ -23,16 +26,22 @@ public class DemoMain {
     public static void main(String[] args) throws Exception {
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
-        SqlSessionFactory sqlSessionFactory = (SqlSessionFactory) context.getBean("sqlSessionFactory");
+        SqlSessionFactory sqlSessionFactory = (SqlSessionFactory) context.getBean(SqlSessionFactory.class);
         SqlSession sqlSession = sqlSessionFactory.getSession();
+
+        // Object bean = context.getBean("&mapperFactoryBean");
+        // PersonDAO personDAO = (PersonDAO) context.getBean("personDAO");
+
+        UserDAO userDAO = (UserDAO) context.getBean(UserDAO.class);
 
         Map<String,Object> param = new HashMap<>();
         param.put("id","123");
         param.put("age",12);
         param.put("money",32141);
 
-        // todo 动态sql
-        List<Object> list = sqlSession.selectList("test.dao.UserMapper.getUserByParam",param);
-        System.out.println(list);
+        // TODO mapper 接口现在必需带map参数，待修改
+        List<User> user = userDAO.getUser(param);
+        System.out.println(user);
+
     }
 }
