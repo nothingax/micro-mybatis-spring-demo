@@ -1,17 +1,15 @@
 package com.microbatis.sample.config;
 
-import com.microbatis.sample.dao.UserDAO;
 import com.xiongyx.datasource.DataSource;
 import com.xiongyx.datasource.DruidDataSourceManager;
 import com.xiongyx.session.SqlSessionFactory;
-import com.zjw.spring.MapperFactoryBean;
 import com.zjw.spring.MapperScannerConfigurer;
 import com.zjw.spring.SqlSessionFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +29,7 @@ import java.util.Map;
 public class BatisConfig {
 
     @Bean("dataSource")
+    // @Order(1)
     DataSource dataSource() {
         // TODO 从配置文件获取数据
         // TODO  toy的数据源设计比较奇怪，没有使用数据源api，而是自己定义了connection接口
@@ -45,7 +44,8 @@ public class BatisConfig {
     }
 
     @Bean(name = "sqlSessionFactory")
-    SqlSessionFactory sqlSessionFactoryBean() {
+    // @Order(2)
+    SqlSessionFactory sqlSessionFactory() {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(this.dataSource());
 
@@ -62,11 +62,33 @@ public class BatisConfig {
         return sqlSessionFactoryBeanObject;
     }
 
-    @Bean
-    public UserDAO userDAO() {
-        MapperFactoryBean<UserDAO> factoryBean = new MapperFactoryBean<>();
-        factoryBean.setMapperInterface(UserDAO.class);
-        factoryBean.setSqlSessionFactory(sqlSessionFactoryBean());
-        return factoryBean.getObject();
+
+
+    @Bean(name = "mapperScannerConfigurer")
+    // @Order(3)
+    MapperScannerConfigurer mapperScannerConfigurer() {
+        MapperScannerConfigurer scannerConfigurer = new MapperScannerConfigurer();
+        scannerConfigurer.setBasePackage("com.microbatis.sample.dao");
+        scannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
+        return scannerConfigurer;
     }
+
+
+    // @Bean
+    // // TODO 设置name
+    // public MapperFactoryBean<UserDAO> userDAO() throws Exception {
+    //     MapperFactoryBean<UserDAO> factoryBean = new MapperFactoryBean<>();
+    //     factoryBean.setMapperInterface(UserDAO.class);
+    //     factoryBean.setSqlSessionFactory(sqlSessionFactoryBean());
+    //     return factoryBean;
+    // }
+
+
+    // @Bean
+    // public UserDAO userDAO() {
+    //     MapperFactoryBean<UserDAO> factoryBean = new MapperFactoryBean<>();
+    //     factoryBean.setMapperInterface(UserDAO.class);
+    //     factoryBean.setSqlSessionFactory(sqlSessionFactoryBean());
+    //     return factoryBean.getObject();
+    // }
 }

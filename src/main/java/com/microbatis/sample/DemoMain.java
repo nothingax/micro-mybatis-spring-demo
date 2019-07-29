@@ -26,13 +26,13 @@ public class DemoMain {
     public static void main(String[] args) throws Exception {
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
-        SqlSessionFactory sqlSessionFactory = (SqlSessionFactory) context.getBean(SqlSessionFactory.class);
+        SqlSessionFactory sqlSessionFactory = (SqlSessionFactory) context.getBean("sqlSessionFactory");
         SqlSession sqlSession = sqlSessionFactory.getSession();
 
         // Object bean = context.getBean("&mapperFactoryBean");
         // PersonDAO personDAO = (PersonDAO) context.getBean("personDAO");
 
-        UserDAO userDAO = (UserDAO) context.getBean(UserDAO.class);
+        UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 
         Map<String,Object> param = new HashMap<>();
         param.put("id","123");
